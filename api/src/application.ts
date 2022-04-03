@@ -1,13 +1,17 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin, SchemaMigrationOptions} from '@loopback/repository';
+import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
-  RestExplorerComponent,
+  RestExplorerComponent
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {CnabRepository} from './repositories/cnab.repository';
+import {CnabSeed} from './repositories/seed/cnab-seed';
+import {TipoTransacaoSeed} from './repositories/seed/tipo-transacao-seed';
+import {TipoTransacaoRepository} from './repositories/tipo-transacao.repository';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -15,7 +19,9 @@ export {ApplicationConfig};
 export class ApiApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
-  constructor(options: ApplicationConfig = {}) {
+  constructor(
+    options: ApplicationConfig = {},
+  ) {
     super(options);
 
     // Set up the custom sequence
@@ -40,5 +46,19 @@ export class ApiApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  async migrateSchema(options?: SchemaMigrationOptions) {
+
+    await super.migrateSchema(options);
+
+    const cnabRepository = await this.getRepository(CnabRepository);
+    const cnabSeed = new CnabSeed(cnabRepository);
+    await cnabSeed.seed();
+
+    const tipoTransacaoRepository = await this.getRepository(TipoTransacaoRepository);
+    const tipoTransacaoSeed = new TipoTransacaoSeed(tipoTransacaoRepository);
+    await tipoTransacaoSeed.seed();
+
   }
 }
