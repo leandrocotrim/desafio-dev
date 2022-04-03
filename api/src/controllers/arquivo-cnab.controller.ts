@@ -44,6 +44,7 @@ export class ArquivoCnabController {
     })
     arquivoCnab: ArquivoCnab,
   ): Promise<ArquivoCnab> {
+    arquivoCnab.Id = undefined;
     return this.arquivoCnabRepository.create(arquivoCnab);
   }
 
