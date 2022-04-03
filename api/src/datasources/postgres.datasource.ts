@@ -5,11 +5,11 @@ const config = {
   name: 'postgres',
   connector: 'postgresql',
   url: '',
-  host: 'postregs.docker',
+  host: '0.0.0.0',
   port: 5432,
   user: 'postgres',
   password: 'desafio-dev',
-  database: 'initdb'
+  database: 'postgres'
 };
 
 // Observe application's life cycle to disconnect the datasource when
