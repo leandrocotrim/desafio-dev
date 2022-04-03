@@ -9,8 +9,8 @@ import {
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {CnabRepository} from './repositories/cnab.repository';
-import {CnabSeed} from './repositories/seed/cnab-seed';
-import {TipoTransacaoSeed} from './repositories/seed/tipo-transacao-seed';
+import {CnabSeed} from './repositories/seed/cnab.seed';
+import {TipoTransacaoSeed} from './repositories/seed/tipo-transacao.seed';
 import {TipoTransacaoRepository} from './repositories/tipo-transacao.repository';
 import {MySequence} from './sequence';
 
