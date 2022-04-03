@@ -6,8 +6,6 @@ import {
   Response,
   RestBindings
 } from '@loopback/rest';
-import events from 'events';
-import readline from 'readline';
 import {FILE_UPLOAD_SERVICE} from '../utils/file/keys';
 import {FileUploadHandler} from '../utils/file/types';
 
@@ -51,34 +49,5 @@ export class FileUploadController {
         }
       });
     });
-  }
-
-  private async exec(rl: readline.Interface) {
-    for await (const line of rl) {
-      console.log(`Line from file: ${line}`);
-    }
-
-    await events.once(rl, 'close');
-  }
-
-  private static getFilesAndFields(request: Request) {
-    const uploadedFiles = request.files;
-    const mapper = (f: globalThis.Express.Multer.File) => ({
-      fieldname: f.fieldname,
-      originalname: f.originalname,
-      encoding: f.encoding,
-      mimetype: f.mimetype,
-      size: f.size,
-    });
-
-    let files: object[] = [];
-    if (Array.isArray(uploadedFiles)) {
-      files = uploadedFiles.map(mapper);
-    } else {
-      for (const filename in uploadedFiles) {
-        files.push(...uploadedFiles[filename].map(mapper));
-      }
-    }
-    return {files, fields: request.body};
   }
 }
