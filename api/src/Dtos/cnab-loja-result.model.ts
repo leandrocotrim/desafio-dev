@@ -1,5 +1,5 @@
 import {Model} from '@loopback/repository';
 
-export class CnabLojaFilterResult extends Model {
+export class CnabLojaResult extends Model {
 
 }
