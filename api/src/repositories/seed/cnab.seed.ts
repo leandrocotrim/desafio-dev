@@ -1,3 +1,4 @@
+import {CompoCnabEnum} from '../../models';
 import {CnabRepository} from '../cnab.repository';
 
 export class CnabSeed {
@@ -16,35 +17,35 @@ export class CnabSeed {
 const cnabs = [
   {
     Comentario: 'Tipo da transação', Descricao: 'Tipo',
-    Fim: 1, Inicio: 1, Tamanho: 1
+    Fim: 1, Inicio: 1, Tamanho: 1, Id: CompoCnabEnum.Tipo
   },
   {
     Comentario: 'Data da ocorrência', Descricao: 'Data',
-    Fim: 2, Inicio: 9, Tamanho: 8
+    Fim: 9, Inicio: 2, Tamanho: 8, Id: CompoCnabEnum.Data
   },
   {
     Comentario: `Valor da movimentação. Obs.
       O valor encontrado no arquivo precisa ser divido por cem(valor / 100.00) para normalizá-lo.`,
-    Descricao: 'Valor', Fim: 10, Inicio: 19, Tamanho: 10
+    Descricao: 'Valor', Fim: 19, Inicio: 10, Tamanho: 10, Id: CompoCnabEnum.Valor
   },
   {
     Comentario: 'CPF do beneficiário', Descricao: 'CPF',
-    Fim: 20, Inicio: 30, Tamanho: 11
+    Fim: 30, Inicio: 20, Tamanho: 11, Id: CompoCnabEnum.Cpf
   },
   {
     Comentario: 'Cartão utilizado na transação', Descricao: 'Cartão',
-    Fim: 31, Inicio: 42, Tamanho: 12
+    Fim: 42, Inicio: 31, Tamanho: 12, Id: CompoCnabEnum.Cartao
   },
   {
     Comentario: 'Hora da ocorrência atendendo ao fuso de UTC-3', Descricao: 'Hora',
-    Fim: 43, Inicio: 48, Tamanho: 6
+    Fim: 48, Inicio: 43, Tamanho: 6, Id: CompoCnabEnum.Hora
   },
   {
     Comentario: 'Nome do representante da loja', Descricao: 'Dono da loja',
-    Fim: 49, Inicio: 62, Tamanho: 14
+    Fim: 62, Inicio: 49, Tamanho: 14, Id: CompoCnabEnum.DonoLoja
   },
   {
     Comentario: 'Nome da loja', Descricao: 'Nome loja',
-    Fim: 81, Inicio: 63, Tamanho: 19
+    Fim: 81, Inicio: 63, Tamanho: 19, Id: CompoCnabEnum.NomeLoja
   },
 ];
