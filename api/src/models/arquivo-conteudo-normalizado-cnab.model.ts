@@ -1,6 +1,25 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_ArquivoConteudoNormalizadoCnab_IdArquivoCnab: {
+        name: 'fk_ArquivoConteudoNormalizadoCnab_IdArquivoCnab',
+        entity: 'arquivocnab',
+        entityKey: 'id',
+        foreignKey: 'idarquivocnab',
+        onDelete: 'CASCADE'
+      },
+      fk_ArquivoConteudoNormalizadoCnab_Tipo: {
+        name: 'fk_ArquivoConteudoNormalizadoCnab_Tipo',
+        entity: 'tipotransacao',
+        entityKey: 'id',
+        foreignKey: 'tipo',
+        onDelete: 'CASCADE'
+      },
+    },
+  },
+})
 export class ArquivoConteudoNormalizadoCnab extends Entity {
   @property({
     type: 'number',
@@ -20,6 +39,12 @@ export class ArquivoConteudoNormalizadoCnab extends Entity {
     required: true,
   })
   Linha: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  Tipo: number;
 
   @property({
     type: 'date',

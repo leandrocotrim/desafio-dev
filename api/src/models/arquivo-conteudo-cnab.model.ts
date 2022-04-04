@@ -1,6 +1,18 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_ArquivoConteudoCnab_IdArquivoCnab: {
+        name: 'fk_ArquivoConteudoCnab_IdArquivoCnab',
+        entity: 'arquivocnab',
+        entityKey: 'id',
+        foreignKey: 'idarquivocnab',
+        onDelete: 'CASCADE'
+      },
+    },
+  }
+})
 export class ArquivoConteudoCnab extends Entity {
   @property({
     type: 'number',
