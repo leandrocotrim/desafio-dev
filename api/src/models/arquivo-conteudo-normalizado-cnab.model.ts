@@ -25,11 +25,14 @@ export class ArquivoConteudoNormalizadoCnab extends Entity {
     type: 'date',
     required: true,
   })
-  Data: string;
+  Data: Date;
 
   @property({
     type: 'number',
     required: true,
+    postgresql: {
+      dataType: 'float4'
+    }
   })
   Valor: number;
 
@@ -37,7 +40,7 @@ export class ArquivoConteudoNormalizadoCnab extends Entity {
     type: 'date',
     required: true,
   })
-  Hora: string;
+  Hora: Date;
 
 
   constructor(data?: Partial<ArquivoConteudoNormalizadoCnab>) {
