@@ -5,9 +5,9 @@ export class Cnab extends Entity {
   @property({
     type: 'number',
     id: true,
-    generated: true,
+    generated: false,
   })
-  Id?: number;
+  Id?: CompoCnabEnum;
 
   @property({
     type: 'string',
@@ -50,3 +50,15 @@ export interface CnabRelations {
 }
 
 export type CnabWithRelations = Cnab & CnabRelations;
+
+
+export enum CompoCnabEnum {
+  Tipo = 1,
+  Data = 2,
+  Hora = 3,
+  Valor = 4,
+  NomeLoja = 5,
+  DonoLoja = 6,
+  Cpf = 7,
+  Cartao = 8
+}
