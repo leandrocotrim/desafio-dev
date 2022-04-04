@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 @Component({
   selector: 'desafio-cnab-loja',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CnabLojaComponent implements OnInit {
 
-  constructor() { }
+  file: File | undefined;
+  showMessage: boolean | undefined;
+
+  constructor(private fileUploadService: FileUploadService) { }
 
   ngOnInit(): void {
   }
 
+  onFileSelected(event: any): void {
+    this.file = event.target.files[0];
+  }
+
+  onSend(): void {
+    this.fileUploadService
+      .send(this.file)
+      .subscribe(this.sendResponse);
+  }
+
+  sendResponse({ ok }: {ok: boolean}) {
+    this.showMessage = ok;
+  }
 }
