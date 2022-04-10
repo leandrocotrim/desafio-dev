@@ -1,1 +1,19 @@
-<p>file-upload works!</p>
+<div>
+    <div>
+      <h4>Upload de arquivos CNAB</h4>
+    </div>
+    <div>
+      <form>
+        <input type="file" (change)="onFileSelected($event)">
+        <button type="button" (click)="onSend()" [disabled]="!file">Enviar</button>
+      </form>
+    </div>
+  
+    <div *ngIf="showMessage === true">
+      Arquivo CNAB processado com sucesso!
+    </div>
+    <div *ngIf="showMessage === false">
+      Erro ao processar arquivo CNAB!
+    </div>
+  </div>
+  

@@ -1,46 +1,67 @@
 import {
-  CountSchema, repository, Where
+  CountSchema, repository
 } from '@loopback/repository';
 import {
   get, param, response
 } from '@loopback/rest';
-import {CnabLojaFilter} from '../Dtos/cnab-loja-filter.model';
-import {CnabLojaResult} from '../Dtos/cnab-loja-result.model';
-import {ArquivoCnabRepository} from '../repositories';
+import {CnabLojaFilterDto} from '../Dtos/cnab-loja-filter.dto';
+import {CnabLojaResultDto} from '../Dtos/cnab-loja-result.dto';
+import {ArquivoCnabRepository, ArquivoConteudoCnabRepository} from '../repositories';
 
 export class CnabLojaController {
   constructor(
     @repository(ArquivoCnabRepository)
-    public arquivoCnabRepository: ArquivoCnabRepository,
+    private arquivoCnabRepository: ArquivoCnabRepository,
+    @repository(ArquivoConteudoCnabRepository)
+    private arquivoConteudoCnabRepository: ArquivoConteudoCnabRepository,
   ) { }
 
-  @get('/cnab-loja/relatorio')
+  @get('/cnab-loja/filtros')
   @response(200, {
-    description: 'Relatório CNAB loja model',
+    description: 'Filtros do relatório CNAB loja',
+    content: {'application/json': {schema: CountSchema}},
+  })
+  async filtros(): Promise<CnabLojaFilterDto> {
+    const arquivosCnab = await this.arquivoCnabRepository.find();
+    const arquivosConteudoCnab = await this.arquivoConteudoCnabRepository.find();
+
+    return {
+      ArquivosCnab: arquivosCnab,
+      Lojas: [...new Set(arquivosConteudoCnab.map(result => result.NomeLoja))],
+    };
+  }
+
+  @get('/cnab-loja/relatorio/{idArquivoCnab}/{nomeLoja}')
+  @response(200, {
+    description: 'Relatório CNAB loja',
     content: {'application/json': {schema: CountSchema}},
   })
   async relatorio(
-    @param.where(CnabLojaFilter) where?: Where<CnabLojaFilter>,
-  ): Promise<CnabLojaResult[]> {
-    return await this.arquivoCnabRepository
-      .execute(
+    @param.path.number('idArquivoCnab') idArquivoCnab: number,
+    @param.path.string('nomeLoja') nomeLoja: string,
+  ): Promise<CnabLojaResultDto[]> {
+
+    const result = await this.arquivoCnabRepository
+      .dataSource.execute(
         `select
-            ac.id
-            , ac.nome
-            , acc.linha
-            , acc.cpf,
-            , acc.cartao,
-            , acc.donoloja
-            , acc.nomeloja
-            , aclc.tipo
-            , aclc."data"
-            , aclc.valor
-            , aclc.hora
+            ac.id as IdArquivoCnab
+            , ac.nome  as NomeArquivo
+            , acc.linha as Linha
+            , acc.cpf as Cpf
+            , acc.cartao as Cartao
+            , acc.donoloja as DonoLoja
+            , acc.nomeloja as NomeLoja
+            , aclc.tipo as Tipo
+            , aclc."data" as Data
+            , aclc.valor as Valor
+            , aclc.hora as Hora
           from arquivocnab ac
-          inner join arquivoconteudocnab acc on ac.id  = acc.id
-          inner join arquivoconteudonormalizadocnab aclc on ac.id = aclc.id and acc.linha = aclc.linha
-          where ac.id  = 1 and acc.nomeloja = ''
-        `
-      ) as CnabLojaResult[];
+          inner join arquivoconteudocnab acc on ac.id  = acc.idarquivocnab
+          inner join arquivoconteudonormalizadocnab aclc on ac.id = aclc.idarquivocnab and acc.linha = aclc.linha
+          where ac.id  = $1 and acc.nomeloja = $2
+        `, [idArquivoCnab, nomeLoja]
+      );
+
+    return result;
   }
 }

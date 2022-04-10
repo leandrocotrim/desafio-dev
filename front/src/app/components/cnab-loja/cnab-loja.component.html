@@ -1,18 +1,52 @@
-<div>
-  <div>
-    <h4>Upload de arquivos CNAB</h4>
-  </div>
-  <div>
-    <form>
-      <input type="file" (change)="onFileSelected($event)">
-      <button type="button" (click)="onSend()" [disabled]="!file">Enviar</button>
-    </form>
-  </div>
+<div *ngIf="filter">
+  <select>
+    <option 
+      *ngFor="let arquivoCnab of filter.ArquivosCnab" 
+      [value]="arquivoCnab.Id">
+        {{ arquivoCnab.Id }} - {{ arquivoCnab.Nome }}
+    </option>
+  </select>
 
-  <div *ngIf="showMessage === true">
-    Arquivo CNAB processado com sucesso!
-  </div>
-  <div *ngIf="showMessage === false">
-    Erro ao processar arquivo CNAB!
-  </div>
+  <select>
+    <option 
+      *ngFor="let loja of filter.Lojas" 
+      [value]="loja">
+        {{ loja }}
+    </option>
+  </select>
+</div>
+
+<div *ngIf="result">
+  <table>
+    <thead>
+      <tr>
+        <th>IdArquivoCnab</th>
+        <th>NomeArquivo</th>
+        <th>Linha</th>
+        <th>Cpf</th>
+        <th>Cartao</th>
+        <th>DonoLoja</th>
+        <th>NomeLoja</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Valor</th>
+        <th>Hora</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cnab of result">
+      <th>{{cnab.IdArquivoCnab}}</th>
+      <th>{{cnab.NomeArquivo}}</th>
+      <th>{{cnab.Linha}}</th>
+      <th>{{cnab.Cpf}}</th>
+      <th>{{cnab.Cartao}}</th>
+      <th>{{cnab.DonoLoja}}</th>
+      <th>{{cnab.NomeLoja}}</th>
+      <th>{{cnab.Tipo}}</th>
+      <th>{{cnab.Data}}</th>
+      <th>{{cnab.Valor}}</th>
+      <th>{{cnab.Hora}}</th>
+    </tr>
+  </tbody>
+  </table>
 </div>

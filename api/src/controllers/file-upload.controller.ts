@@ -106,7 +106,8 @@ export class FileUploadController {
                   ),
                   IdArquivoCnab: conteudo.IdArquivoCnab,
                   Linha: conteudo.Linha,
-                  Valor: parseInt(conteudo.Valor) / 100
+                  Valor: parseInt(conteudo.Valor) / 100,
+                  Tipo: parseInt(conteudo.Tipo)
                 }
               ));
 

@@ -1,5 +1,8 @@
+import { Cnab } from './../../models/cnab';
+import { Subscription } from 'rxjs';
+import { CnabLojaService } from './../../services/cnab-loja.service';
 import { Component, OnInit } from '@angular/core';
-import { FileUploadService } from 'src/app/services/file-upload.service';
+import { FilterCnab } from './../../models/filter-cnab';
 
 @Component({
   selector: 'desafio-cnab-loja',
@@ -7,26 +10,33 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
   styleUrls: ['./cnab-loja.component.scss']
 })
 export class CnabLojaComponent implements OnInit {
+  subGetFilter: Subscription | undefined;
 
-  file: File | undefined;
-  showMessage: boolean | undefined;
+  public filter: FilterCnab = new FilterCnab;
+  public result: Cnab[] | undefined;
 
-  constructor(private fileUploadService: FileUploadService) { }
+  public modelo = {
+    idArquivoCnab: 0,
+    loja: ''
+  };
+
+  constructor(private cnabLojaService: CnabLojaService) { }
 
   ngOnInit(): void {
+    this.subGetFilter = this.cnabLojaService.getFilter()
+      .subscribe(this.setFilter);
   }
 
-  onFileSelected(event: any): void {
-    this.file = event.target.files[0];
+  onFilter(): void {
+
   }
 
-  onSend(): void {
-    this.fileUploadService
-      .send(this.file)
-      .subscribe(this.sendResponse);
+  setFilter(filter: FilterCnab): void {
+    debugger
+    this.filter = filter;
   }
 
-  sendResponse({ ok }: {ok: boolean}) {
-    this.showMessage = ok;
+  setReult(result: Cnab[]): void {
+    this.result = result;
   }
 }
