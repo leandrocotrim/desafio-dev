@@ -32,7 +32,7 @@ export class FileUploadComponent implements OnInit {
       .subscribe(this.sendResponse);
   }
 
-  sendResponse({ ok }: {ok: boolean}) {
+  sendResponse = ({ ok }: {ok: boolean}): void => {
     this.showMessage = ok;
   }
 }

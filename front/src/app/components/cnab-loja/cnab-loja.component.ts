@@ -31,12 +31,11 @@ export class CnabLojaComponent implements OnInit {
 
   }
 
-  setFilter(filter: FilterCnab): void {
-    debugger
+  setFilter = (filter: FilterCnab): void => {
     this.filter = filter;
   }
 
-  setReult(result: Cnab[]): void {
+  setReult = (result: Cnab[]): void => {
     this.result = result;
   }
 }
