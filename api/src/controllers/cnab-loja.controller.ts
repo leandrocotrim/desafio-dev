@@ -39,7 +39,7 @@ export class CnabLojaController {
   async relatorio(
     @param.path.number('idArquivoCnab') idArquivoCnab: number,
     @param.path.string('nomeLoja') nomeLoja: string,
-  ): Promise<CnabLojaResultDto[]> {
+  ): Promise<{result: CnabLojaResultDto[], saldo: number}> {
 
     const result = await this.arquivoCnabRepository
       .dataSource.execute(
@@ -58,10 +58,14 @@ export class CnabLojaController {
           from arquivocnab ac
           inner join arquivoconteudocnab acc on ac.id  = acc.idarquivocnab
           inner join arquivoconteudonormalizadocnab aclc on ac.id = aclc.idarquivocnab and acc.linha = aclc.linha
-          where ac.id  = $1 and acc.nomeloja = $2
+          where ac.id  = $1 and trim(acc.nomeloja) = trim($2)
         `, [idArquivoCnab, nomeLoja]
       );
 
-    return result;
+    const saldo = result
+      .map((item: any) => item.valor)
+      .reduce((acumulador: number, itemValor: number) => (acumulador + itemValor));
+
+    return {result, saldo};
   }
 }
