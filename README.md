@@ -1,3 +1,68 @@
+ A api foi criada com Loopback 4 e o front foi criado com angular 13.
+
+## Pontos a melhorar
+Existem vários pontos a melhorar, como seprar lógicas em controller em um serviço, tipar melhor alguns retornos, quardar time em timestamp e não em um datetime. O front está sem nenhum css aplicado, está totalmente cru.
+Não foram feitos os `test` e nem o `docker-compose`.
+E outros pontos.
+
+# Como rodar?
+### 1 - Faça o clone
+```bash
+git clone  https://github.com/leandrocotrim/desafio-dev
+```
+
+### 2 - Subir o banco com docker
+```docker
+docker run --name desafio-dev -e POSTGRES_PASSWORD=desafio-dev  -p 5432:5432 -d postgres
+```
+
+Podendo assim configurar o a conexão com o banco
+```js
+const config = {
+  name: 'postgres',
+  connector: 'postgresql',
+  url: '',
+  host: '0.0.0.0',
+  port: 5432,
+  user: 'postgres',
+  password: 'desafio-dev',
+  database: 'postgres'
+}
+```
+
+### 3 - Subindo `api` em http://localhost:3000
+```bash
+# entre no diretório api
+desafio-dev % cd api
+
+# baixe as dependencias com yarn
+api % yarn
+
+# para fazer as migrações do banco
+api % yarn run migrate
+
+# subindo a aplicação
+api % yarn start
+```
+
+Após isso só acessar http://localhost:3000
+
+### 4 - Subindo o `front` em http://localhost:4200
+```bash
+# entre no diretório front
+desafio-dev % cd front
+
+# baixe as dependencias com npm
+front % npm i
+
+# subindo a aplicação
+front % ng serve
+```
+
+Após isso só acessar http://localhost:4200
+
+___
+
 # Desafio programação - para vaga desenvolvedor
 
 Por favor leiam este documento do começo ao fim, com muita atenção.
@@ -46,7 +111,7 @@ Sua tarefa é criar uma interface web que aceite upload do [arquivo CNAB](https:
 | Data  | 2  | 9 | 8 | Data da ocorrência
 | Valor | 10 | 19 | 10 | Valor da movimentação. *Obs.* O valor encontrado no arquivo precisa ser divido por cem(valor / 100.00) para normalizá-lo.
 | CPF | 20 | 30 | 11 | CPF do beneficiário
-| Cartão | 31 | 42 | 12 | Cartão utilizado na transação 
+| Cartão | 31 | 42 | 12 | Cartão utilizado na transação
 | Hora  | 43 | 48 | 6 | Hora da ocorrência atendendo ao fuso de UTC-3
 | Dono da loja | 49 | 62 | 14 | Nome do representante da loja
 | Nome loja | 63 | 81 | 19 | Nome da loja
