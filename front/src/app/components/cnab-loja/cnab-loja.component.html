@@ -1,5 +1,6 @@
-<div *ngIf="filter">
-  <select>
+<form ngForm>
+  <div *ngIf="filter" id="filters">
+  <select [(ngModel)]="idArquivoCnab" name="idArquivoCnab" id="idArquivoCnab">
     <option 
       *ngFor="let arquivoCnab of filter.ArquivosCnab" 
       [value]="arquivoCnab.Id">
@@ -7,16 +8,18 @@
     </option>
   </select>
 
-  <select>
+  <select [(ngModel)]="loja" name="loja" id="loja">
     <option 
       *ngFor="let loja of filter.Lojas" 
       [value]="loja">
         {{ loja }}
     </option>
   </select>
+
+  <button (click)="onSearch()">Buscar</button>
 </div>
 
-<div *ngIf="result">
+<div *ngIf="result" id="result">
   <table>
     <thead>
       <tr>
@@ -35,18 +38,25 @@
   </thead>
   <tbody>
     <tr *ngFor="let cnab of result">
-      <th>{{cnab.IdArquivoCnab}}</th>
-      <th>{{cnab.NomeArquivo}}</th>
-      <th>{{cnab.Linha}}</th>
-      <th>{{cnab.Cpf}}</th>
-      <th>{{cnab.Cartao}}</th>
-      <th>{{cnab.DonoLoja}}</th>
-      <th>{{cnab.NomeLoja}}</th>
-      <th>{{cnab.Tipo}}</th>
-      <th>{{cnab.Data}}</th>
-      <th>{{cnab.Valor}}</th>
-      <th>{{cnab.Hora}}</th>
+      <td>{{cnab.IdArquivoCnab}}</td>
+      <td>{{cnab.NomeArquivo}}</td>
+      <td>{{cnab.Linha}}</td>
+      <td>{{cnab.Cpf}}</td>
+      <td>{{cnab.Cartao}}</td>
+      <td>{{cnab.DonoLoja}}</td>
+      <td>{{cnab.NomeLoja}}</td>
+      <td>{{cnab.Tipo}}</td>
+      <td>{{cnab.Data}}</td>
+      <td>{{cnab.Valor}}</td>
+      <td>{{cnab.Hora}}</td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <th>Saldo: </th>
+      <th colspan="10">{{saldo}}</th>
+    </tr>
+  </tfoot>
   </table>
 </div>
+</form>

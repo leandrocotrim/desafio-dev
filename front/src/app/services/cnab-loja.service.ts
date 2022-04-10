@@ -18,9 +18,9 @@ export class CnabLojaService {
     ) as Observable<FilterCnab>;
   }
 
-  getRelatorio(findCnab: FindCnab): Observable<Cnab[]> {
+  getRelatorio(findCnab: FindCnab): Observable<{result: any[], saldo: number}> {
     return this.http.get(
-      `http://localhost:3000/cnab-loja/${findCnab.IdArquivoCnab}/${findCnab.NomeArquivo}`,
-    ) as Observable<Cnab[]>;
+      `http://localhost:3000/cnab-loja/relatorio/${findCnab.IdArquivoCnab}/${findCnab.NomeLoja}`,
+    ) as Observable<{result: any[], saldo: number}>;
   }
 }

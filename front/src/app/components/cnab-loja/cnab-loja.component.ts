@@ -1,3 +1,4 @@
+import { FindCnab } from './../../models/find-cnab';
 import { Cnab } from './../../models/cnab';
 import { Subscription } from 'rxjs';
 import { CnabLojaService } from './../../services/cnab-loja.service';
@@ -14,12 +15,11 @@ export class CnabLojaComponent implements OnInit {
 
   public filter: FilterCnab = new FilterCnab;
   public result: Cnab[] | undefined;
+  public saldo: number = 0;
 
-  public modelo = {
-    idArquivoCnab: 0,
-    loja: ''
-  };
-
+  public idArquivoCnab: number = 0;
+  public loja: string = '';
+  
   constructor(private cnabLojaService: CnabLojaService) { }
 
   ngOnInit(): void {
@@ -27,15 +27,18 @@ export class CnabLojaComponent implements OnInit {
       .subscribe(this.setFilter);
   }
 
-  onFilter(): void {
-
+  onSearch(): void {
+    const findCnab: FindCnab = { IdArquivoCnab: this.idArquivoCnab, NomeLoja: this.loja };
+    this.cnabLojaService.getRelatorio(findCnab)
+      .subscribe(this.setReult);
   }
 
   setFilter = (filter: FilterCnab): void => {
     this.filter = filter;
   }
 
-  setReult = (result: Cnab[]): void => {
-    this.result = result;
+  setReult = ({ result, saldo } : {result: any[], saldo: number} ): void => {
+    this.result = result.map((item: any) => new Cnab(item));
+    this.saldo = saldo;
   }
 }
