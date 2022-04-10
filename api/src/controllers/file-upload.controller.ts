@@ -92,24 +92,51 @@ export class FileUploadController {
             await this.arquivoConteudoCnabRepository.createAll(arquivoConteudoCnabs);
 
             const arquivoConteudoNormalizadoCnabs =
-              arquivoConteudoCnabs.map(conteudo => (
-                <ArquivoConteudoNormalizadoCnab>{
-                  Data: new Date(
-                    parseInt(conteudo.Data.substring(0, 3)),
-                    parseInt(conteudo.Data.substring(4, 5)) - 1,
-                    parseInt(conteudo.Data.substring(6, 7))
-                  ),
-                  Hora: new Date(1970, 1, 1,
-                    parseInt(conteudo.Data.substring(0, 1)),
-                    parseInt(conteudo.Data.substring(2, 3)),
-                    parseInt(conteudo.Data.substring(4, 5)),
-                  ),
-                  IdArquivoCnab: conteudo.IdArquivoCnab,
-                  Linha: conteudo.Linha,
-                  Valor: parseInt(conteudo.Valor) / 100,
-                  Tipo: parseInt(conteudo.Tipo)
+              arquivoConteudoCnabs.map(conteudo => {
+
+                function buildDate(year: number, month: number, date: number, hours: number = 0, minutes: number = 0, seconds: number = 0, ms: number = 0) {
+                  let dt = new Date();
+                  dt.setUTCFullYear(year);
+                  dt.setUTCMonth(month);
+                  dt.setUTCDate(date);
+                  dt.setUTCHours(hours);
+                  dt.setUTCMinutes(minutes);
+                  dt.setUTCSeconds(seconds);
+                  dt.setUTCMilliseconds(ms);
+                  return dt;
                 }
-              ));
+
+                const data = buildDate(
+                  parseInt(conteudo.Data.substring(0, 4)),
+                  parseInt(conteudo.Data.substring(4, 6)) - 1,
+                  parseInt(conteudo.Data.substring(6, 8)),
+                );
+
+                const hora = buildDate(1970, 1, 1,
+                  parseInt(conteudo.Hora.substring(0, 2)),
+                  parseInt(conteudo.Hora.substring(2, 4)),
+                  parseInt(conteudo.Hora.substring(4, 6)),
+                );
+
+                const arquivoConteudoNormalizadoCnab =
+                  <ArquivoConteudoNormalizadoCnab>{
+                    Data: data,
+                    Hora: hora,
+                    IdArquivoCnab: conteudo.IdArquivoCnab,
+                    Linha: conteudo.Linha,
+                    Valor: parseInt(conteudo.Valor) / 100,
+                    Tipo: parseInt(conteudo.Tipo)
+                  };
+
+                const sinal = tiposTransacao
+                  .find(tipo => tipo.Tipo == arquivoConteudoNormalizadoCnab.Tipo)
+                  ?.Sinal;
+
+                if (!sinal) arquivoConteudoNormalizadoCnab.Valor *= -1;
+
+                return arquivoConteudoNormalizadoCnab;
+              }
+              );
 
             await this.arquivoConteudoNormalizadoCnabRepository
               .createAll(arquivoConteudoNormalizadoCnabs);
